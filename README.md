@@ -75,12 +75,5 @@ However, for learning or inspiration:
 
 ---
 
-## 📄 License
-
-This project is open-source under the [MIT License](LICENSE) for educational and inspirational purposes.  
-**Please do not directly reuse this code as your own portfolio.**
-
----
-
 > Built with ❤️ by Sandarbh Bajpai  
 > [Visit My Portfolio](https://spotlight-orpin-tau.vercel.app/)
