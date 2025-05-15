@@ -1,0 +1,516 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Global styles for the portfolio website.
+  Defines CSS variables for color themes (light and dark),
+  sets base typography, smooth scrolling, and various animations.
+*/
+
+body {
+  /* Using the Geist Sans font as defined in your variables */
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  /* Smooth scrolling for navigation links */
+  scroll-behavior: smooth;
+  /* Default background and text colors applied by ThemeProvider using variables */
+  /* Adding a subtle text-rendering for better font appearance */
+  text-rendering: optimizeLegibility;
+  /* Prevent font size adjustments on mobile devices */
+  -webkit-text-size-adjust: 100%;
+
+  /* Adding a more visible wavy background animation */
+  /* Using radial gradients for a soft color transition */
+  background-image: radial-gradient(
+      circle at top left,
+      var(--accent) 0%,
+      transparent 35%
+    ),
+    /* Increased transparent area */
+      radial-gradient(
+        circle at bottom right,
+        var(--primary) 0%,
+        transparent 35%
+      ); /* Increased transparent area */
+  background-size: 300% 300%; /* Make the gradients significantly larger */
+  background-position: 0% 0%; /* Initial position */
+  animation: wavyBackground 10s ease-in-out infinite alternate; /* Decreased animation duration for faster movement */
+
+  /* Uncomment the pattern below if you prefer it over the wavy gradient */
+  /*
+  background-image: linear-gradient(45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background)), linear-gradient(45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background));
+  background-size: 20px 20px; // Adjust size for desired pattern density
+  background-position: 0 0, 10px 10px; // Offset the second gradient
+  animation: none; // Disable wavyBackground animation if using pattern
+  */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  /*
+    CSS Variables for Light and Dark Themes.
+    These are used by Tailwind CSS configuration and components.
+    Adjusted for a more eye-catching theme with vibrant accents.
+    NEW THEME PALETTE
+  */
+  :root {
+    /* Light Theme Colors - New Palette (Example: Blues and Oranges/Corals) */
+    --background: 200 20% 98%; /* Very light blue-gray background */
+    --foreground: 210 40% 20%; /* Deep blue-gray - Primary Text */
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 210 40% 20%; /* Deep blue-gray */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 20%;
+
+    --primary: 210 40% 20%; /* Deep blue-gray - Primary Elements */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 200 15% 94%; /* Light cool gray */
+    --secondary-foreground: 210 40% 20%; /* Deep blue-gray */
+
+    --muted: 200 10% 85%; /* Muted light blue-gray */
+    --muted-foreground: 200 10% 45%; /* Darker muted blue-gray text */
+
+    --accent: 15 80% 60%; /* Vibrant Coral/Orange */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 200 15% 88%; /* Light blue-gray border */
+    --input: 200 15% 90%; /* Light input background */
+    --ring: 15 80% 65%; /* Slightly brighter Coral for focus rings */
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 290 70% 70%;
+    --chart-5: 350 80% 60%;
+    --radius: 0.5rem;
+
+    /* Sidebar variables (Adjusted to match new palette) */
+    --sidebar-background: 210 40% 15%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 15 80% 65%;
+    --sidebar-primary-foreground: 210 40% 10%;
+    --sidebar-accent: 15 80% 70%;
+    --sidebar-accent-foreground: 210 40% 10%;
+    --sidebar-border: 210 40% 25%;
+    --sidebar-ring: 15 80% 70%;
+  }
+
+  .dark {
+    /* Dark Theme Colors - New Palette (Example: Dark Blues and Oranges/Corals) */
+    --background: 210 40% 10%; /* Very Dark Blue-Gray background */
+    --foreground: 0 0% 90%; /* Light gray text */
+
+    --card: 210 40% 15%; /* Darker Blue-Gray for cards */
+    --card-foreground: 0 0% 90%;
+
+    --popover: 210 40% 12%; /* Dark Blue-Gray for popovers */
+    --popover-foreground: 0 0% 90%;
+
+    --primary: 15 80% 60%; /* Vibrant Coral/Orange for primary actions */
+    --primary-foreground: 210 40% 8%; /* Very Dark Blue-Gray */
+
+    --secondary: 210 40% 20%; /* Medium Dark Blue-Gray */
+    --secondary-foreground: 0 0% 80%; /* Lighter gray */
+
+    --muted: 210 40% 25%; /* Muted Dark Blue-Gray */
+    --muted-foreground: 0 0% 50%; /* Muted gray text */
+
+    --accent: 15 80% 70%; /* Even Brighter Coral/Orange for accents */
+    --accent-foreground: 210 40% 6%; /* Even Darker Blue-Gray */
+
+    --destructive: 0 60% 40%; /* Darker Red */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 40% 30%; /* Dark Blue-Gray border */
+    --input: 210 40% 18%; /* Dark Blue-Gray input background */
+    --ring: 15 80% 75%; /* Brightest Coral for focus rings */
+
+    --chart-1: 230 75% 65%;
+    --chart-2: 180 65% 50%;
+    --chart-3: 40 85% 60%;
+    --chart-4: 290 70% 70%;
+    --chart-5: 350 80% 60%;
+
+    /* Dark Sidebar variables (Adjusted to match new palette) */
+    --sidebar-background: 210 40% 8%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 15 80% 70%;
+    --sidebar-primary-foreground: 210 40% 6%;
+    --sidebar-accent: 15 80% 75%;
+    --sidebar-accent-foreground: 210 40% 6%;
+    --sidebar-border: 210 40% 20%;
+    --sidebar-ring: 15 80% 75%;
+  }
+}
+
+@layer base {
+  /* Apply border color globally */
+  * {
+    @apply border-border;
+  }
+
+  /* Base body styles - font features */
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1; /* Enable common ligatures and contextual alternates */
+  }
+
+  /*
+    Enhance headings for better visual hierarchy.
+    Using Tailwind's @apply to use utility classes.
+  */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold leading-tight; /* Ensure headings are bold and have tight line height */
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl lg:text-6xl;
+  }
+  h2 {
+    @apply text-3xl sm:text-4xl lg:text-5xl;
+  }
+  h3 {
+    @apply text-2xl sm:text-3xl lg:text-4xl;
+  }
+  h4 {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+  h5 {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+  h6 {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+
+  /* Improve paragraph readability */
+  p {
+    @apply leading-relaxed; /* Increase line height for better readability */
+  }
+
+  /* Add subtle focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--ring); /* Use the ring color for focus outline */
+    outline-offset: 2px; /* Add some space around the element */
+    border-radius: var(--radius); /* Match border radius */
+  }
+}
+
+/*
+  Animations
+*/
+
+/* Fade-in animation (enhanced) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px); /* Start further down */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide-in from left animation */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-80px); /* Start further left */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide-in from right animation */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(80px); /* Start further right */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8); /* Start smaller */
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.05); /* Slightly overshoot */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* Settle at normal size */
+  }
+}
+
+/* Wavy background animation for the body */
+@keyframes wavyBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Wavy text background animation - Adjusted for more noticeable horizontal scroll effect */
+@keyframes wavyTextBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%; /* Animate across the full width */
+  }
+}
+
+/* Class to apply the fade-in animation */
+.fade-in-section {
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0; /* Start hidden, animation will make it visible */
+}
+
+/* Classes for new animations */
+.slide-in-left {
+  animation: slideInLeft 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.pop-in {
+  animation: popIn 0.5s ease-out forwards; /* Shorter duration for a quicker pop */
+  opacity: 0;
+}
+
+/* Class to apply the wavy text effect */
+.wavy-text {
+  /* Using a linear gradient for text background */
+  background-image: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--primary),
+    var(--accent),
+    var(--primary),
+    var(--accent)
+  ); /* Added more colors for a more dynamic gradient */
+  background-size: 800% auto; /* Increased background size significantly for more space to scroll */
+  background-clip: text; /* Clip background to text shape */
+  -webkit-background-clip: text; /* For Safari */
+  text-fill-color: transparent; /* Make text transparent */
+  -webkit-text-fill-color: transparent; /* For Safari */
+  animation: wavyTextBackground 15s linear infinite; /* Adjusted animation duration for smoother scroll */
+  display: inline-block; /* Ensure the element is treated as a block for background properties */
+}
+
+/* Smooth scroll for anchor links - already present, keeping for clarity */
+html {
+  scroll-behavior: smooth;
+}
+
+.wavy-gradient-text {
+  background: linear-gradient(270deg, #0003be, #ff7b00, #6366f1, #a21caf);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: wavy-gradient-move 4s ease-in-out infinite;
+}
+
+@keyframes wavy-gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.wavy-motion {
+  display: inline-block;
+  animation: wavy-motion 4.5s infinite linear alternate;
+}
+
+@keyframes wavy-motion {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-3px);
+  }
+  40% {
+    transform: translateY(3px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+  80% {
+    transform: translateY(2px);
+  }
+}
+/* --- Skill Bubbles Cloud Styles --- */
+.skill-bubble {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: 0 4px 24px rgba(80, 80, 180, 0.08);
+  background: linear-gradient(135deg, #a21caf 0%, #6366f1 100%);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  will-change: transform;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  user-select: none;
+  text-align: center;
+  z-index: 1;
+}
+.skill-bubble:hover {
+  transform: scale(1.12) translateY(-8px) rotate(-2deg);
+  box-shadow: 0 8px 32px rgba(80, 80, 180, 0.18);
+  z-index: 10;
+}
+@media (max-width: 768px) {
+  .skill-bubble {
+    font-size: 0.8rem;
+    padding: 0.7rem;
+  }
+}
+
+.orange-gradient-animated {
+  background: linear-gradient(270deg, #ff9800, #d00aee, #ff9800, #ff5722);
+  background-size: 200% 200%;
+  color: #fff !important;
+  animation: orange-gradient-move 3s ease-in-out infinite;
+  border: none;
+  /* Remove background-clip and padding-box */
+  /* Remove any Tailwind bg-* classes from the Button */
+}
+
+@keyframes orange-gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.skill-pill {
+  background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
+  color: hsl(var(--primary-foreground));
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  transition: transform 0.2s;
+  margin-right: 0.5rem;
+}
+
+.skill-pill:hover {
+  transform: scale(1.05);
+}
+/* Optional: Custom thin scrollbar for skills pills row */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thumb-accent\/60 {
+  scrollbar-color: #a21caf99 transparent;
+}
+.scrollbar-track-transparent {
+  background: transparent;
+}
+::-webkit-scrollbar {
+  height: 6px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #a21caf99;
+  border-radius: 3px;
+}
+/* Larger, more visible horizontal scrollbar */
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  height: 20px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ff9068;
+  border-radius: 10px;
+  border: 3px solid #203040;
+}
+
+.skills-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-wire-path {
+  stroke-dasharray: 1200; /* Match the approximate line length */
+  stroke-dashoffset: 1200;
+  animation: wire-crawl 8s linear infinite;
+}
+
+@keyframes wire-crawl {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-wire-trail {
+    animation: none !important;
+  }
+}
+
+/* Disable parallax on mobile */
+@media (max-width: 768px) {
+  .parallax-bg {
+    transform: none !important;
+  }
+}
+
+/*
+.dark body {
+   background-image: linear-gradient(45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background)), linear-gradient(45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background));
+   background-size: 20px 20px;
+   background-position: 0 0, 10px 10px;
+   animation: none; // Disable wavyBackground animation if using pattern
+}
+*/
