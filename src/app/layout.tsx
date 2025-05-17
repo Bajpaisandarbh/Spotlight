@@ -7,9 +7,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Portfolio - Your Name",
+  title: "Spotlight - Sandarbh's Portfolio",
   description:
-    "A modern personal portfolio website showcasing skills and projects.",
+    "Spotlight is my personal portfolio . I am a passionate full-stack developer and technology enthusiast. This interactive site showcases my projects, technical skills, achievements, and blog insights, all brought to life with modern design, engaging animations, and a focus on user experience. Built with Next.js, Tailwind CSS, and MongoDB, Spotlight is more than a resume: it’s a living, evolving reflection of my journey in software development, creativity, and continuous learning.",
 };
 
 export default function RootLayout({
