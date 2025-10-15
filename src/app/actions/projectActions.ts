@@ -12,7 +12,7 @@ const initialProjectsData: Omit<Project, 'id'>[] = [
   {
     title: 'Infinite Runner Game: My Endless Adventure Game',
     description: 'This is an endless running game I created where you control a speedy cube! The goal is to navigate through a constantly changing world, dodging obstacles for as long as you can.',
-    imageUrl: '/assets/projects/runner.svg',
+  imageUrl: '/assets/projects/runner.png',
     tags: ['WebGL', 'Unity', 'HTML5', '3D', 'C#', 'GamePhysics'],
     liveDemoUrl: '#',
     githubUrl: '#',
@@ -20,7 +20,7 @@ const initialProjectsData: Omit<Project, 'id'>[] = [
   {
     title: 'Recruitify: An AI-Automated Recruitment Platform',
     description: 'Recruitify is an AI project I developed to automate and improve the recruitment workflow. It can automatically read candidate information from resumes, score how well they match a job, and provide insights.',
-    imageUrl: '/assets/projects/recruitify.svg',
+  imageUrl: '/assets/projects/recruitify.png',
     tags: ['Python', 'Ollama', 'NLP', 'Gradio', 'OpenSource', 'Machine Learning'],
     liveDemoUrl: '#',
     githubUrl: 'https://github.com/Bajpaisandarbh/Recruitify',
@@ -28,7 +28,7 @@ const initialProjectsData: Omit<Project, 'id'>[] = [
   {
     title: 'HIREZ - AI hiring platform',
     description: 'Hirez can take tests of candidates on behalf of HR and also eliminate by using our trained AI model which we have used. Candidate can upload their resume on the website and...',
-    imageUrl: '/assets/projects/hirez.svg',
+  imageUrl: '/assets/projects/hirez.png',
     tags: ['Next.js', 'Tailwind CSS', 'TypeScript'],
     liveDemoUrl: '#',
     githubUrl: '#',
