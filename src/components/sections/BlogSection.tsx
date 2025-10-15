@@ -75,10 +75,11 @@ export function BlogSection({ id }: BlogSectionProps) {
                       <Image
                         src={post.imageUrl}
                         alt={post.title}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        style={{ objectFit: 'cover' }}
                         className="transition-transform duration-300 group-hover:scale-105"
                         data-ai-hint="technology blog"
+                        unoptimized={post.imageUrl.startsWith('http')}
                       />
                     </div>
                   </CardHeader>

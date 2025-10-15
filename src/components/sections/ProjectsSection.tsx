@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Lightbulb, Construction } from "lucide-react";
 import { getProjects } from "@/app/actions/projectActions";
-import type { Project } from "@/lib/types";
 import { LampPostWithSpotlight } from "@/components/LampPostWithSpotlight";
 
 interface ProjectsSectionProps {
@@ -23,7 +22,7 @@ export async function ProjectsSection({ id }: ProjectsSectionProps) {
           </LampPostWithSpotlight>
         </div>
         <p className="text-lg text-foreground/80 text-center mb-12 max-w-2xl mx-auto">
-          Here are some of the key projects I've worked on. Each project
+          Here are some of the key projects I&apos;ve worked on. Each project
           showcases my skills in developing robust and user-friendly
           applications.
         </p>
@@ -49,7 +48,7 @@ export async function ProjectsSection({ id }: ProjectsSectionProps) {
                   Always Building
                 </h3>
                 <p className="text-foreground/80 text-sm mb-4">
-                  I'm constantly working on new ideas and improving my skills.
+                  I&apos;m constantly working on new ideas and improving my skills.
                   Check out my blog or GitHub for behind-the-scenes and upcoming
                   projects!
                 </p>

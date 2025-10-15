@@ -1,15 +1,6 @@
 "use client";
 import type { TimelineEvent } from "@/lib/types";
-import {
-  Briefcase,
-  GraduationCap,
-  Rocket,
-  Code,
-  PenTool,
-  Users,
-  Activity,
-  CodeSquare,
-} from "lucide-react";
+import { Briefcase, GraduationCap, Rocket } from "lucide-react";
 import Image from "next/image";
 import { InteractiveTimelineItem } from "@/components/InteractiveTimelineItem";
 

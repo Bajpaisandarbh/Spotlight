@@ -21,14 +21,26 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full rounded-xl border-2 border-transparent hover:border-accent">
       <CardHeader className="p-0">
         <div className="aspect-video relative">
-          <Image
-            src={project.imageUrl}
-            alt={project.title}
-            layout="fill"
-            objectFit="cover"
-            className="transition-transform duration-300 group-hover:scale-105"
-            data-ai-hint="project application"
-          />
+          {project.imageUrl.endsWith('.svg') ? (
+            // Use native <img> for SVGs to avoid Next/Image SVG restrictions
+            // and keep styling similar.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={project.imageUrl}
+              alt={project.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              data-ai-hint="project application"
+            />
+          ) : (
+            <Image
+              src={project.imageUrl}
+              alt={project.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              className="transition-transform duration-300 group-hover:scale-105"
+              data-ai-hint="project application"
+            />
+          )}
         </div>
       </CardHeader>
       <CardContent className="p-6 flex-grow">

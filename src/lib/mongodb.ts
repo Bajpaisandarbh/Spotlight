@@ -13,11 +13,21 @@ if (!MONGODB_URI) {
  * in development. This prevents connections from growing exponentially
  * during API Route usage.
  */
-let cached = (global as any).mongoose;
+type MongooseCache = { conn: typeof import('mongoose') | null; promise: Promise<typeof import('mongoose')> | null };
 
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace NodeJS {
+    interface Global {
+      mongoose?: MongooseCache;
+    }
+  }
 }
+
+const g = global as unknown as NodeJS.Global & { mongoose?: MongooseCache };
+const cached: MongooseCache = g.mongoose || { conn: null, promise: null };
+// Ensure global reference exists
+g.mongoose = cached;
 
 async function connectDB() {
   if (cached.conn) {

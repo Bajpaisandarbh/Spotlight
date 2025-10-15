@@ -117,8 +117,8 @@ export function HeroSection({ id }: HeroSectionProps) {
             <Image
               src="/Profile.jpg"
               alt="Sandarbh Bajpai - Professional Photograph"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               priority
             />
           </div>

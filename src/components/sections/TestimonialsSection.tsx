@@ -1,4 +1,4 @@
-import Image from "next/image";
+// Image import removed (not used)
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Testimonial } from "@/lib/types";
@@ -67,7 +67,7 @@ export function TestimonialsSection({ id }: TestimonialsSectionProps) {
                   <CardContent className="p-6 flex-grow flex flex-col">
                     <Quote className="h-8 w-8 text-accent mb-4" />
                     <p className="text-foreground/80 italic mb-6 flex-grow">
-                      "{testimonial.quote}"
+                      {testimonial.quote}
                     </p>
                     <div className="flex items-center mt-auto pt-4 border-t border-border">
                       <Avatar className="h-12 w-12 mr-4">

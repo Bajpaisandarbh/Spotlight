@@ -66,7 +66,7 @@ export function ContactSection({ id }: ContactSectionProps) {
       if (response.success) {
         toast({
           title: "Message Sent!",
-          description: "Thanks for reaching out. I'll get back to you soon.",
+          description: "Thanks for reaching out. I&apos;ll get back to you soon.",
           variant: "default",
         });
         (event.target as HTMLFormElement).reset();
@@ -98,7 +98,7 @@ export function ContactSection({ id }: ContactSectionProps) {
         </h2>
         <p className="text-lg text-foreground/80 text-center mb-12 max-w-2xl mx-auto">
           Have a project in mind, a question, or just want to say hi? Feel free
-          to reach out. I'm always open to discussing new opportunities and
+          to reach out. I&apos;m always open to discussing new opportunities and
           collaborations.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -144,7 +144,7 @@ export function ContactSection({ id }: ContactSectionProps) {
                   rows={5}
                   required
                   className="mt-1 bg-background placeholder:text-foreground/50"
-                  placeholder="Hi there, I'd like to discuss..."
+                  placeholder="Hi there, I&apos;d like to discuss..."
                 />
               </div>
               <div>

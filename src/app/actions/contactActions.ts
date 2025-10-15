@@ -2,6 +2,8 @@
 
 import connectDB from '@/lib/mongodb';
 import ContactMessageModel, { type IContactMessage } from '@/models/ContactMessage';
+import sgMail from '@sendgrid/mail';
+import type { MailDataRequired } from '@sendgrid/helpers/classes/mail';
 import nodemailer from 'nodemailer';
 
 export interface SubmitContactFormInput {
@@ -36,26 +38,59 @@ export async function submitContactForm(
     const savedMessage = await newContactMessage.save() as IContactMessage & { _id: string };
 
     // 2. Send Email Notification
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASSWORD,
-      },
-    });
+    // Use Gmail (nodemailer + app password) as the primary (free) sender.
+    // Use SendGrid only if SENDGRID_API_KEY is set and SENDGRID_PRIMARY=true.
+    const sendGridKey = process.env.SENDGRID_API_KEY;
+    const useSendGridPrimary = (process.env.SENDGRID_PRIMARY || '').toLowerCase() === 'true';
 
-    await transporter.sendMail({
-      from: `"Portfolio Contact" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
-      subject: `New Contact Form Submission from ${formData.name}`,
-      text: `Name: ${formData.name}\nEmail: ${formData.email}\nMessage: ${formData.message}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Message:</strong><br/>${formData.message.replace(/\n/g, "<br/>")}</p>
-      `,
-    });
+    const mailSubject = `New Contact Form Submission from ${formData.name}`;
+    const mailText = `Name: ${formData.name}\nEmail: ${formData.email}\nMessage: ${formData.message}`;
+    const mailHtml = `
+      <h2>New Contact Form Submission</h2>
+      <p><strong>Name:</strong> ${formData.name}</p>
+      <p><strong>Email:</strong> ${formData.email}</p>
+      <p><strong>Message:</strong><br/>${formData.message.replace(/\n/g, "<br/>")}</p>
+    `;
+
+    if (sendGridKey && useSendGridPrimary) {
+      // If explicitly configured to use SendGrid as primary
+      sgMail.setApiKey(sendGridKey);
+      const msg: MailDataRequired = {
+        to: (process.env.SENDGRID_FROM || process.env.GMAIL_USER) as string,
+        from: {
+          email: (process.env.SENDGRID_FROM || process.env.GMAIL_USER) as string,
+          name: formData.name,
+        },
+        replyTo: {
+          email: formData.email,
+          name: formData.name,
+        },
+        subject: mailSubject,
+        text: mailText,
+        html: mailHtml,
+      };
+      await sgMail.send(msg);
+    } else {
+      // Primary path: nodemailer using Gmail app password (free)
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASSWORD,
+        },
+      });
+
+      // Use the sender's name as the display name but send from the verified account
+      const fromAddress = process.env.GMAIL_USER;
+      await transporter.sendMail({
+        from: `"${formData.name}" <${fromAddress}>`,
+        to: process.env.GMAIL_USER,
+        replyTo: `${formData.name} <${formData.email}>`,
+        subject: mailSubject,
+        text: mailText,
+        html: mailHtml,
+      });
+    }
 
     return {
       success: true,

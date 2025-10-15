@@ -2,6 +2,7 @@
 
 import connectDB from '@/lib/mongodb';
 import ProjectModel, { type IProject } from '@/models/Project';
+import { Types } from 'mongoose';
 import type { Project } from '@/lib/types';
 
 // Data that was previously in ProjectsSection.tsx, used for seeding.
@@ -9,34 +10,40 @@ import type { Project } from '@/lib/types';
 // It won't be stored in the DB schema if not explicitly defined.
 const initialProjectsData: Omit<Project, 'id'>[] = [
   {
-    title: 'E-commerce Platform',
-    description: 'A full-featured e-commerce platform with robust product management, user authentication, and payment integration. Built with modern technologies for scalability and performance.',
-    imageUrl: 'https://picsum.photos/seed/project1/600/400',
-    tags: ['Next.js', 'TypeScript', 'Stripe', 'PostgreSQL'],
-    liveDemoUrl: 'https://www.youtube.com/watch?v=d0NZ4z9wzgo',
-    githubUrl: 'https://github.com/Bajpaisandarbh/Recruitify',
-    caseStudyUrl: '#',
-  },
-  {
-    title: 'Recruitify',
-    description: 'A collaborative task management application designed to improve team productivity. Features include drag-and-drop boards, real-time updates, and notification systems.',
-    imageUrl: 'https://picsum.photos/seed/project2/600/400',
-    tags: ['Python', 'Ollama', 'Gradio', 'OpenSource', 'NLP', 'MachineLearning'],
+    title: 'Infinite Runner Game: My Endless Adventure Game',
+    description: 'This is an endless running game I created where you control a speedy cube! The goal is to navigate through a constantly changing world, dodging obstacles for as long as you can.',
+    imageUrl: '/assets/projects/runner.svg',
+    tags: ['WebGL', 'Unity', 'HTML5', '3D', 'C#', 'GamePhysics'],
     liveDemoUrl: '#',
     githubUrl: '#',
   },
   {
-    title: 'Personal Portfolio Website',
-    description: 'This very portfolio website, designed to showcase my skills and projects in a visually appealing and interactive manner. Focus on clean design and responsiveness.',
-    imageUrl: 'https://picsum.photos/seed/project3/600/400',
+    title: 'Recruitify: An AI-Automated Recruitment Platform',
+    description: 'Recruitify is an AI project I developed to automate and improve the recruitment workflow. It can automatically read candidate information from resumes, score how well they match a job, and provide insights.',
+    imageUrl: '/assets/projects/recruitify.svg',
+    tags: ['Python', 'Ollama', 'NLP', 'Gradio', 'OpenSource', 'Machine Learning'],
+    liveDemoUrl: '#',
+    githubUrl: 'https://github.com/Bajpaisandarbh/Recruitify',
+  },
+  {
+    title: 'HIREZ - AI hiring platform',
+    description: 'Hirez can take tests of candidates on behalf of HR and also eliminate by using our trained AI model which we have used. Candidate can upload their resume on the website and...',
+    imageUrl: '/assets/projects/hirez.svg',
     tags: ['Next.js', 'Tailwind CSS', 'TypeScript'],
+    liveDemoUrl: '#',
     githubUrl: '#',
-    caseStudyUrl: '#',
   },
 ];
 
 async function seedProjects() {
-  await connectDB();
+  try {
+    await connectDB();
+  } catch (err) {
+    // If we can't connect to the DB, skip seeding during builds or offline runs
+    console.warn('Skipping project seeding because DB connection failed:', err);
+    return;
+  }
+
   const count = await ProjectModel.countDocuments();
   if (count === 0) {
     console.log('No projects found, seeding initial data...');
@@ -60,7 +67,7 @@ export async function getProjects(): Promise<Project[]> {
     
     // Map Mongoose documents to plain objects and transform _id to id
     const projects: Project[] = projectsFromDB.map(doc => {
-      const project = doc.toObject({ virtuals: true }) as IProject & {_id: any};
+      const project = doc.toObject({ virtuals: true }) as IProject & {_id: Types.ObjectId};
       return {
         id: project._id.toString(),
         title: project.title,
@@ -74,9 +81,20 @@ export async function getProjects(): Promise<Project[]> {
     });
     return projects;
   } catch (error) {
-    console.error('Error fetching projects:', error);
-    // In a real app, you might want to throw a more specific error or handle it differently
-    return []; // Return empty array on error to prevent breaking the page
+    // If fetching projects fails (for example during build due to DNS issues with MongoDB Atlas),
+    // fall back to the local initialProjectsData so the site can still render static content.
+    console.warn('Error fetching projects; falling back to local seed data:', error);
+    const fallback: Project[] = initialProjectsData.map((p, i) => ({
+      id: `local-${i + 1}`,
+      title: p.title,
+      description: p.description,
+      imageUrl: p.imageUrl,
+      tags: p.tags,
+      liveDemoUrl: p.liveDemoUrl,
+      githubUrl: p.githubUrl || '#',
+      caseStudyUrl: p.caseStudyUrl || '#',
+    }));
+    return fallback;
   }
 }
 
@@ -89,7 +107,7 @@ export async function getProjectById(id: string): Promise<Project | null> {
       return null;
     }
     
-    const project = projectFromDB.toObject({ virtuals: true }) as IProject & {_id: any};
+  const project = projectFromDB.toObject({ virtuals: true }) as IProject & {_id: Types.ObjectId};
     return {
       id: project._id.toString(),
       title: project.title,
@@ -112,7 +130,7 @@ export async function createProject(projectData: Omit<Project, 'id'>): Promise<P
     const newProjectDoc = new ProjectModel(projectData);
     const savedProject = await newProjectDoc.save();
     
-    const project = savedProject.toObject({ virtuals: true }) as IProject & {_id: any};
+  const project = savedProject.toObject({ virtuals: true }) as IProject & {_id: Types.ObjectId};
     return {
       id: project._id.toString(),
       title: project.title,
